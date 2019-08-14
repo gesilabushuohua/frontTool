@@ -4,35 +4,12 @@
  */
 
 const Draw = function() {
-  //  构造对象，初始化数据
-  const draw = function() {};
-
-  //  设置图形起始点
-
-  //  设置图像移动点
-
-  //  结束绘画
-
-  //  设置绘画样式
-  function _setRectStyle() {
-    this.context.lineWidth = '4';
-    this.context.fillStyle = '#0000ff';
-    this.context.strokeStyle = 'green';
-  }
-  //  绘画图形
-
-  //  清理绘画区域
-  function _clearCanvas() {
-    this.context.clearRect(0, 0, this.clientW, this.clientH);
-  }
-  //  获取返回绘画数据
-
+  //  构造类，初始化数据
   return class {
-    constructor(canvasDom) {
-      this.canvasDom = canvasDom;
-      this.clientW = canvasDom.clientWidth;
-      this.clientH = canvasDom.clientHeight;
-      this.context = canvasDom.getContext('2d');
+    constructor(context, w, h) {
+      this.clientW = w;
+      this.clientH = h;
+      this.context = context;
       this.drawing = false;
       this.position = {
         startX: 0,
@@ -40,8 +17,48 @@ const Draw = function() {
         moveX: 0,
         moveY: 0
       };
-      this.setRectStyle = _setRectStyle.bind(this);
-      this.clearCanvas = _clearCanvas.bind(this);
+    }
+    //  开始绘画
+    openDraw() {
+      this.drawing = true;
+    }
+
+    //  结束绘画
+    closeDraw() {
+      this.drawing = false;
+    }
+
+    //  设置开始位置
+    setStartPoint(startX, startY) {
+      Object.assign(this.position, {
+        startX: startX,
+        startY: startY
+      });
+    }
+
+    //  设置结束位置
+    setEndPoint(moveX, moveY) {
+      Object.assign(this.position, {
+        moveX: moveX,
+        moveY: moveY
+      });
+    }
+
+    //  设置绘画样式
+    setDrawStyle() {
+      this.context.lineWidth = '4';
+      this.context.fillStyle = '#0000ff';
+      this.context.strokeStyle = 'green';
+    }
+    //  绘画图形
+    draw() {}
+
+    //  返回位置坐标
+    getPosition() {}
+
+    //  清理绘画区域
+    clearCanvas() {
+      this.context.clearRect(0, 0, this.clientW, this.clientH);
     }
   };
 };
