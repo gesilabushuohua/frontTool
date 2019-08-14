@@ -17,7 +17,8 @@ const DrawArea = (function() {
   let drawArea = function(contain, w, h) {
     this.canvasObj = _createCanvas(contain, w, h);
     let context = this.canvasObj.getContext("2d");
-    this.drawObj = new Rectangle(context, w, h);
+    // this.drawObj = new Rectangle(context, w, h);
+    this.drawObj = new Circle(context, w, h);
     this._initCanvasEvent();
   };
 

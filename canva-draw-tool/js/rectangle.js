@@ -47,5 +47,10 @@ const Rectangle = (function() {
     }
   };
 
+  //  获取
+  rectangle.prototype.getPosition = function(moveX,moveY) {
+    return this.position;
+   };
+   
   return rectangle;
 })();
