@@ -5,33 +5,43 @@
  *
  */
 
-const DrawArea = function() {
-  function createCanvas(contain, w, h) {
-    let canvas = document.createElement('canvas');
+const DrawArea = (function() {
+  function _createCanvas(contain, w, h) {
+    let canvas = document.createElement("canvas");
     canvas.width = w;
     canvas.height = h;
     contain.appendChild(canvas);
     return canvas;
   }
 
-  function initCanvasEvent(canvasObj, drawObj) {
+  let drawArea = function(contain, w, h) {
+    this.canvasObj = _createCanvas(contain, w, h);
+    let context = this.canvasObj.getContext("2d");
+    this.drawObj = new Rectangle(context, w, h);
+    this._initCanvasEvent();
+  };
+
+  drawArea.prototype.setDrawType = function(type) {
+    let drawType = null;
+    this.drawObj = drawType[type];
+  };
+  drawArea.prototype._initCanvasEvent = function() {
     let that = this;
-    canvasObj.onmousedown = function(e) {
-      that.drawing = true;
-      drawObj.openDraw(e.layerX, e.layerY);
+    that.canvasObj.onmousedown = function(e) {
+      that.drawObj.openDraw();
+      that.drawObj.setStartPoint(e.layerX, e.layerY);
     };
 
-    canvasObj.onmousemove = function(e) {
-      if (that.drawing) {
-        drawObj.moveDraw(e.layerX, e.layerY);
-      }
+    that.canvasObj.onmousemove = function(e) {
+      that.drawObj.setMovePoint(e.layerX, e.layerY);
+      that.drawObj.drawGraph();
     };
 
-    canvasObj.onmouseup = function(e) {
-      if (that.drawing) {
-        drawObj.moveDraw(e.layerX, e.layerY);
-      }
-      that.drawing = false;
+    that.canvasObj.onmouseup = function(e) {
+      that.drawObj.setMovePoint(e.layerX, e.layerY);
+      that.drawObj.drawGraph();
+      that.drawObj.closeDraw();
     };
-  }
-};
+  };
+  return drawArea;
+})();
