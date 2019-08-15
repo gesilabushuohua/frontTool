@@ -41,10 +41,13 @@ const Polyline = (function() {
     }
   };
 
+  // 判断节点是否结束
   polyline.prototype.judgeIsEndPoint = function() {
     let  len  = this.position.length;
     let { x: sx, y: sy } = this.position[0];
     let { x: ex, y: ey } = this.position[len - 1];
+
+    //  节点数大于3，点在5像素之内
     if (len >= 3 && (Math.abs(sx - ex) < 5 || Math.abs(sy - ey) < 5)) {
       return true;
     }
