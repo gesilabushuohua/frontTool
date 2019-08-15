@@ -19,6 +19,14 @@ const Rectangle = (function() {
 
   //  设置开始位置
   rectangle.prototype.setStartPoint = function(startX,startY) {
+    if(!this.drawing){
+      this.position = {
+        startX: 0,
+        startY: 0,
+        moveX: 0,
+        moveY: 0
+      };
+    }
     Object.assign(this.position, {
      startX,
      startY
