@@ -16,23 +16,27 @@ const DrawArea = (function() {
 
   let drawArea = function(contain, w, h) {
     this.canvasObj = _createCanvas(contain, w, h);
-    this.drawType = 'polyline';
     let context = this.canvasObj.getContext("2d");
-    // this.drawObj = new Rectangle(context, w, h);
-    // this.drawObj = new Circle(context, w, h);
-    this.drawObj = new Polyline(context, w, h);
+    this.drawType = {
+      'polyline':new Polyline(context, w, h),
+      'rectangle':new Rectangle(context, w, h),
+      'circle':new Circle(context, w, h)
+    };
+    this.drawObj = this.drawType['rectangle'];
     this._initCanvasEvent();
   };
 
   drawArea.prototype.setDrawType = function(type) {
-    let drawType = null;
-    this.drawObj = drawType[type];
+    console.log(type);
+    this.drawObj = this.drawType[type];
   };
+
   drawArea.prototype._initCanvasEvent = function() {
     let that = this;
     that.canvasObj.onmousedown = function(e) {
       //  根据绘画状态，清空存储数据
       that.drawObj.setStartPoint(e.layerX, e.layerY);
+      console.log(that.drawObj);
       that.drawObj.openDraw();
     };
 

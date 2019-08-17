@@ -14,8 +14,14 @@ const Circle = (function() {
     Draw.call(this, context, w, h);
   }
   //  设置继承
-  circle.prototype = Draw.prototype;
-  circle.prototype.constructor = circle;
+  
+  circle.prototype = Object.create(Draw.prototype);
+  circle.prototype.constructor = circle; 
+ 
+
+ /*  let prototype = Object.create(Draw.prototype);
+  prototype.constructor = circle;
+  circle.prototype = prototype; */
 
   //  设置开始位置
   circle.prototype.setStartPoint = function(startX, startY) {

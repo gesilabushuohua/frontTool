@@ -5,8 +5,13 @@ const Polyline = (function() {
     Draw.call(this, context, w, h);
   }
   //  设置继承
-  polyline.prototype = Draw.prototype;
+  
+  polyline.prototype = Object.create(Draw.prototype);
   polyline.prototype.constructor = polyline;
+
+ /*  let prototype = Object.create(Draw.prototype);
+  prototype.constructor = polyline;
+  polyline.prototype = prototype; */
 
   //  设置开始位置
   polyline.prototype.setStartPoint = function(x, y) {
@@ -43,7 +48,7 @@ const Polyline = (function() {
 
   // 判断节点是否结束
   polyline.prototype.judgeIsEndPoint = function() {
-    let  len  = this.position.length;
+    let len = this.position.length;
     let { x: sx, y: sy } = this.position[0];
     let { x: ex, y: ey } = this.position[len - 1];
 

@@ -5,17 +5,26 @@ const Rectangle = (function() {
 
   //  构建子构造函数
   function rectangle(context, w, h) {
+    Draw.call(this, context, w, h);
     this.position = {
       startX: 0,
       startY: 0,
       moveX: 0,
       moveY: 0
     };
-    Draw.call(this, context, w, h);
   }
   //  设置继承
+  /* 
+  直接使用 Draw 属性，修改Draw属性，继承子类覆盖之前所有属性
   rectangle.prototype = Draw.prototype;
   rectangle.prototype.constructor = rectangle;
+ */
+
+  //  创建对象副本，修改属性，不影响父级
+  rectangle.prototype = Object.create(Draw.prototype);
+  rectangle.prototype.constructor = rectangle;
+
+
 
   //  设置开始位置
   rectangle.prototype.setStartPoint = function(startX,startY) {
