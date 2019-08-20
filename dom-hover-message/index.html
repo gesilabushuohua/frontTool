@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <title>鼠标绘图工具</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+      }
+      .contain {
+        position: relative;
+        height: 100%;
+      }
+      .hover-dom {
+        position: absolute;
+        width: 200px;
+        height: 200px;
+        cursor: pointer;
+        line-height: 200px;
+        text-align: center;
+        font-size: 60px;
+        color: #fff;
+      }
+      .hover-dom:nth-child(1) {
+        left: 0;
+        top: 0;
+        background-color: #ff6600;
+      }
+      .hover-dom:nth-child(2) {
+        right: 0;
+        top: 0;
+        background-color: #ff66ff;
+      }
+      .hover-dom:nth-child(3) {
+        left: 45%;
+        top: 45%;
+        background-color: #cc99ff;
+      }
+      .hover-dom:nth-child(4) {
+        left: 0;
+        bottom: 0;
+        background-color: #9933ff;
+      }
+      .hover-dom:nth-child(5) {
+        right: 0;
+        bottom: 0;
+        background-color: #6699ff;
+      }
+
+      .hover-dom > span {
+        background-color: #ebebeb;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="contain" class="contain">
+      <div class="hover-dom" data-index="0">
+        <span data-index="0">One</span>
+      </div>
+      <div class="hover-dom" data-index="1">
+        <span data-index="1">Two</span>
+      </div>
+      <div class="hover-dom" data-index="2">
+        <span data-index="2">Three</span>
+      </div>
+      <div class="hover-dom" data-index="3">
+        <span data-index="3">Four</span>
+      </div>
+      <div class="hover-dom" data-index="4">
+        <span data-index="4">Five</span>
+      </div>
+    </div>
+
+    <div class=""></div>
+
+    <script src="js/dom-hover-message.js"></script>
+    <script src="js/dom.js"></script>
+  </body>
+</html>
