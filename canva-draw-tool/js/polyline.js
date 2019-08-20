@@ -30,14 +30,18 @@ const Polyline = (function() {
 
   polyline.prototype.setSavePoint = function(x, y) {
     if (this.drawing) {
-      console.log('setSavePoint', { x, y });
       this.position.push({ x, y });
     }
   };
 
   polyline.prototype.drawAreaPosition = function(position) {
-    this.position = position;
-    this.drawGraph();
+    if (position && position.length > 0) {
+      this.position = position;
+      this.drawing = true;
+      this.drawGraph();
+      this.context.fill();
+      this.drawing = false;
+    }
   };
 
   polyline.prototype.drawGraph = function() {
