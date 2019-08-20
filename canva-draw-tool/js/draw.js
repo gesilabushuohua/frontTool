@@ -32,9 +32,9 @@ const Draw = (function() {
 
   //  设置绘画样式
   draw.prototype.setDrawStyle = function() {
-    this.context.lineWidth = "4";
-    this.context.fillStyle = "#0000ff";
-    this.context.strokeStyle = "green";
+    this.context.lineWidth = '4';
+    this.context.fillStyle = 'rgba(255,255,102,0.1)';
+    this.context.strokeStyle = 'green';
   };
   //  绘画图形
   draw.prototype.drawGraph = function() {};
@@ -49,7 +49,7 @@ const Draw = (function() {
 
   // 测试代码
   draw.prototype.sayStatues = function() {
-    console.log("sayStatues");
+    console.log('sayStatues');
   };
 
   return draw;

@@ -14,12 +14,11 @@ const Circle = (function() {
     Draw.call(this, context, w, h);
   }
   //  设置继承
-  
-  circle.prototype = Object.create(Draw.prototype);
-  circle.prototype.constructor = circle; 
- 
 
- /*  let prototype = Object.create(Draw.prototype);
+  circle.prototype = Object.create(Draw.prototype);
+  circle.prototype.constructor = circle;
+
+  /*  let prototype = Object.create(Draw.prototype);
   prototype.constructor = circle;
   circle.prototype = prototype; */
 
@@ -45,6 +44,19 @@ const Circle = (function() {
       moveX,
       moveY
     });
+  };
+
+  //  设置结束位置
+  circle.prototype.setSavePoint = function(moveX, moveY) {
+    Object.assign(this.position, {
+      moveX,
+      moveY
+    });
+  };
+
+  circle.prototype.drawAreaPosition = function(position) {
+    this.position = position;
+    this.drawGraph();
   };
 
   circle.prototype.drawGraph = function() {

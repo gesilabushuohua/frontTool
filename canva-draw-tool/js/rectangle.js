@@ -24,11 +24,9 @@ const Rectangle = (function() {
   rectangle.prototype = Object.create(Draw.prototype);
   rectangle.prototype.constructor = rectangle;
 
-
-
   //  设置开始位置
-  rectangle.prototype.setStartPoint = function(startX,startY) {
-    if(!this.drawing){
+  rectangle.prototype.setStartPoint = function(startX, startY) {
+    if (!this.drawing) {
       this.position = {
         startX: 0,
         startY: 0,
@@ -37,17 +35,30 @@ const Rectangle = (function() {
       };
     }
     Object.assign(this.position, {
-     startX,
-     startY
+      startX,
+      startY
     });
   };
 
   //  设置结束位置
-  rectangle.prototype.setMovePoint = function(moveX,moveY) {
+  rectangle.prototype.setMovePoint = function(moveX, moveY) {
     Object.assign(this.position, {
       moveX,
       moveY
     });
+  };
+
+  //  设置结束位置
+  rectangle.prototype.setSavePoint = function(moveX, moveY) {
+    Object.assign(this.position, {
+      moveX,
+      moveY
+    });
+  };
+
+  rectangle.prototype.drawAreaPosition = function(position) {
+    this.position = position;
+    this.drawGraph();
   };
 
   rectangle.prototype.drawGraph = function() {
@@ -65,9 +76,9 @@ const Rectangle = (function() {
   };
 
   //  获取
-  rectangle.prototype.getPosition = function(moveX,moveY) {
+  rectangle.prototype.getPosition = function(moveX, moveY) {
     return this.position;
-   };
-   
+  };
+
   return rectangle;
 })();

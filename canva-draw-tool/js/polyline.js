@@ -2,33 +2,42 @@ const Polyline = (function() {
   //  构建子构造函数
   function polyline(context, w, h) {
     this.position = [];
+    this.movePoint = null;
     Draw.call(this, context, w, h);
   }
   //  设置继承
-  
+
   polyline.prototype = Object.create(Draw.prototype);
   polyline.prototype.constructor = polyline;
 
- /*  let prototype = Object.create(Draw.prototype);
+  /*  let prototype = Object.create(Draw.prototype);
   prototype.constructor = polyline;
   polyline.prototype = prototype; */
 
   //  设置开始位置
   polyline.prototype.setStartPoint = function(x, y) {
     if (!this.drawing) {
-      this.position = [];
+      this.position = [{ x, y }];
     }
-    this.position.push({ x, y });
   };
 
   //  设置移动位置
   polyline.prototype.setMovePoint = function(x, y) {
     if (this.drawing) {
-      if (this.position.length >= 2) {
-        this.position.pop();
-      }
+      this.movePoint = { x, y };
+    }
+  };
+
+  polyline.prototype.setSavePoint = function(x, y) {
+    if (this.drawing) {
+      console.log('setSavePoint', { x, y });
       this.position.push({ x, y });
     }
+  };
+
+  polyline.prototype.drawAreaPosition = function(position) {
+    this.position = position;
+    this.drawGraph();
   };
 
   polyline.prototype.drawGraph = function() {
@@ -40,6 +49,10 @@ const Polyline = (function() {
       this.context.moveTo(startX, startY);
       for (let i = 1; i < this.position.length; i++) {
         let { x, y } = this.position[i];
+        this.context.lineTo(x, y);
+      }
+      if (this.movePoint) {
+        let { x, y } = this.movePoint;
         this.context.lineTo(x, y);
       }
       this.context.stroke();
@@ -54,6 +67,8 @@ const Polyline = (function() {
 
     //  节点数大于3，点在5像素之内
     if (len >= 3 && (Math.abs(sx - ex) < 5 || Math.abs(sy - ey) < 5)) {
+      this.movePoint = null;
+      console.log(this.position);
       return true;
     }
     return false;
@@ -67,7 +82,7 @@ const Polyline = (function() {
   };
 
   //  获取
-  polyline.prototype.getPosition = function(moveX, moveY) {
+  polyline.prototype.getPosition = function() {
     return this.position;
   };
 
