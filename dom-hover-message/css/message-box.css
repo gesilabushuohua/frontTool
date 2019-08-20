@@ -1,0 +1,47 @@
+.message-box {
+  position: absolute;
+  top: 100px;
+  left: 300px;
+  padding: 10px;
+  width: 300px;
+  height: 200px;
+  background-color: #fff;
+  border: 1px solid #ebebeb;
+  border-radius: 4px;
+  box-shadow: 0 0 10px 1px #bbb;
+} 
+
+.message-box >p:nth-child(1){
+  font-weight: bolder;
+  line-height: 30px;
+}
+
+.message-box >p:not( :nth-child(1)){
+  line-height: 20px;
+}
+
+.message-box-top::after {
+  content: "";
+  display: block;
+  position: absolute;
+  left: 50%;
+  bottom: -10px;
+  border-width: 10px;
+  border-style: solid;
+  border-color: #fff #fff transparent transparent;
+  transform: rotate(135deg); 
+  box-shadow: 2px -2px 5px #bbb;
+}
+
+.message-box-bottom::before {
+  content: "";
+  display: block;
+  position: absolute;
+  left: 50%;
+  top: -10px;
+  border-width: 10px;
+  border-style: solid;
+  border-color: #fff #fff transparent transparent;
+  transform: rotate(-45deg); 
+  box-shadow: 2px -2px 5px #bbb;
+}
