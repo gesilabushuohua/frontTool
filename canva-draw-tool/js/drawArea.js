@@ -22,7 +22,7 @@ const DrawArea = (function() {
       rectangle: new Rectangle(context, w, h),
       circle: new Circle(context, w, h)
     };
-    this.type = 'rectangle';
+    this.type = 'polyline';
     this.drawObj = this.drawType[this.type];
     this._initCanvasEvent();
   };
@@ -36,12 +36,26 @@ const DrawArea = (function() {
     this.drawObj.drawAreaPosition(position);
   };
 
+  drawArea.prototype.getCanvasObj = function() {
+    return this.canvasObj;
+  };
+
+  drawArea.prototype.restPosition = function() {
+    this.drawObj.restPosition();
+  };
+
+  drawArea.prototype.getPosition = function() {
+    return this.drawObj.getPosition();
+  };
+
   drawArea.prototype._initCanvasEvent = function() {
     let that = this;
     that.canvasObj.onmousedown = function(e) {
       //  根据绘画状态，清空存储数据
-      that.drawObj.setStartPoint(e.layerX, e.layerY);
       that.drawObj.openDraw();
+      if (that.type !== 'polyline') {
+        that.drawObj.setStartPoint(e.layerX, e.layerY);
+      }
     };
 
     that.canvasObj.onmousemove = function(e) {
@@ -52,27 +66,15 @@ const DrawArea = (function() {
     that.canvasObj.onmouseup = function(e) {
       that.drawObj.setSavePoint(e.layerX, e.layerY);
       that.drawObj.drawGraph();
-      //  非多边形，松开左键结束事件
-      if (that.type === 'polyline') return;
-      console.log('onmouseup');
       that.drawObj.closeDraw();
     };
+  };
 
-    that.canvasObj.ondblclick = function(e) {
-      //  多边形，双击结束绘图
-      if (that.type === 'polyline') {
-        that.drawObj.setSavePoint(e.layerX, e.layerY);
-        that.drawObj.drawGraph();
-        that.drawObj.closeDraw();
-      }
-    };
-
-    drawArea.prototype.destoryEvent = function() {
-      this.canvasObj.onmousedown = null;
-      this.canvasObj.onmousemove = null;
-      this.canvasObj.onmouseup = null;
-      this.canvasObj.ondblclick = null;
-    };
+  drawArea.prototype.destoryEvent = function() {
+    this.canvasObj.onmousedown = null;
+    this.canvasObj.onmousemove = null;
+    this.canvasObj.onmouseup = null;
+    this.canvasObj.ondblclick = null;
   };
   return drawArea;
 })();
