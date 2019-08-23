@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <title>my notification</title>
+    <style>
+      html,
+      body {
+        height: 100%;
+        overflow-y: auto;
+      }
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+      }
+      #btn {
+        width: 200px;
+        height: 100px;
+        cursor: pointer;
+        background-color: #9933ff;
+        color: #fff;
+        line-height: 100px;
+        text-align: center;
+        font-size: 40px;
+        font-weight: bolder;
+      }
+
+      .notification-box {
+        position: absolute;
+        right: 5px;
+        bottom: 5px;
+        width: 400px;
+        height: 200px;
+        border: 1px solid #ddd;
+        border-radius: 2px;
+        box-shadow: 0 0 5px #ebebeb;
+        font-size: 14px;
+      }
+
+      .box-head {
+        padding: 0 10px;
+        height: 30px;
+        line-height: 30px;
+        border-top-left-radius: 2px;
+        border-top-right-radius: 2px;
+        background-color: #9933ff;
+        color: #fff;
+      }
+
+      .box-head::after {
+        content: '\d7';
+        float: right;
+        font-weight: bolder;
+        font-size: 25px;
+      }
+
+      .box-body {
+        padding: 5px 20px;
+        height: 130px;
+      }
+
+      .box-body > img {
+        width: 100px;
+        height: 100px;
+      }
+
+      .box-footer {
+        padding: 0 15px;
+        height: 20px;
+        line-height: 20px;
+        float: right;
+        color: #3d3d3d;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="btn">Click Me</div>
+    <div class="notification-box">
+      <div class="box-head">最新消息(14条未阅读)</div>
+      <div class="box-body">
+        <img src="./3.jpg" />
+        <div class="infos">
+          <p>车牌号</p>
+          <p></p>
+          <p></p>
+        </div>
+      </div>
+      <div class="box-footer">查看详情</div>
+    </div>
+    <script src="./dom.js"></script>
+  </body>
+</html>
