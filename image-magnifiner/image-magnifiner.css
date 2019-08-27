@@ -1,0 +1,18 @@
+.slider-box {
+  position: absolute;
+  top: 0;
+  background-image: linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 1) 10%,
+      rgba(0, 0, 0, 0) 10%
+    ),
+    linear-gradient(rgba(0, 0, 0, 1) 10%, rgba(0, 0, 0, 0) 10%);
+  background-size: 7px 7px;
+}
+
+.show-box {
+  position: absolute;
+  bottom: 0;
+  border: 4px solid red;
+  overflow: hidden;
+}

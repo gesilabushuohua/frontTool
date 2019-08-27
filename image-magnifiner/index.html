@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>图片放大镜</title>
+    <link rel="stylesheet" type="text/css" href="./image-magnifiner.css" />
+    <style>
+      .car-image {
+        position: relative;
+        margin: 0 auto;
+      }
+      .car-image .origin-img {
+        border: 4px solid #ebebeb;
+        width: 400px;
+        height: 500px;
+      }
+      .car-frame {
+        position: absolute;
+        left: 123px;
+        top: 92px;
+        width: 200px;
+        height: 155px;
+        background: linear-gradient(to left, #0dfb07, #0dfb07) left top
+            no-repeat,
+          linear-gradient(to bottom, #0dfb07, #0dfb07) left top no-repeat,
+          linear-gradient(to left, #0dfb07, #0dfb07) right top no-repeat,
+          linear-gradient(to bottom, #0dfb07, #0dfb07) right top no-repeat,
+          linear-gradient(to left, #0dfb07, #0dfb07) left bottom no-repeat,
+          linear-gradient(to bottom, #0dfb07, #0dfb07) left bottom no-repeat,
+          linear-gradient(to left, #0dfb07, #0dfb07) right bottom no-repeat,
+          linear-gradient(to left, #0dfb07, #0dfb07) right bottom no-repeat;
+        background-size: 4px 20px, 20px 4px, 4px 20px, 20px 4px;
+        transition: all 0.2s ease-in;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="car-image" class="car-image">
+      <img id="origin-img" class="origin-img" src="./3.jpg" />
+      <div id="carFrame" class="car-frame"></div>
+    </div>
+    <!-- <div class="slider-box"></div>
+    <div class="show-box">
+      <img src="./3.jpg" />
+    </div> -->
+    <script src="./image-magnifiner.js"></script>
+    <script src="./dom.js"></script>
+  </body>
+</html>
