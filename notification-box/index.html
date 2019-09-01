@@ -32,10 +32,10 @@
         right: 5px;
         bottom: 5px;
         width: 350px;
-        height: 190px;
+        height: 180px;
         border: 1px solid #ddd;
         border-radius: 2px;
-        box-shadow: 0 0 5px #ebebeb;
+        box-shadow: 0 0 15px 10px #ebebeb;
         font-size: 14px;
       }
 
@@ -49,16 +49,21 @@
         color: #fff;
       }
 
-      .box-head::after {
-        content: '\d7';
+      .box-head .close {
+        width: 30px;
+        height: 30px;
+        text-align: center;
+        line-height: 30px;
+        cursor: pointer;
+        color: #fff;
+        content: "\d7";
         float: right;
-        font-weight: bolder;
-        font-size: 25px;
+        font-size: 20px;
       }
 
       .box-body {
         padding: 5px 15px;
-        height: 120px;
+        height: 110px;
       }
 
       .box-body > img {
@@ -71,6 +76,7 @@
       .box-body .infos {
         display: inline-block;
         vertical-align: top;
+        margin-top: 7px;
       }
 
       .box-body .infos > p {
@@ -88,8 +94,11 @@
   </head>
   <body>
     <div id="btn">Click Me</div>
-    <div class="notification-box">
-      <div class="box-head">最新消息(14条未阅读)</div>
+  <!--   <div class="notification-box">
+      <div class="box-head">
+        <span>最新消息(14条未阅读)</span>
+        <span class="close">x</span>
+      </div>
       <div class="box-body">
         <img src="./3.jpg" />
         <div class="infos">
@@ -100,7 +109,8 @@
         </div>
       </div>
       <div class="box-footer">查看详情</div>
-    </div>
+    </div> -->
+    <script src="./notification-box.js"></script>
     <script src="./dom.js"></script>
   </body>
 </html>
