@@ -41,31 +41,34 @@ const DrawArea = (function() {
     let that = this;
     that.canvasObj.onmousedown = function(e) {
       //  根据绘画状态，清空存储数据
-      that.drawObj.openDraw();
-      that.drawObj.setStartPoint(e.layerX, e.layerY);
+      that.drawObj.openDraw(e);
+     /*  that.drawObj.setStartPoint(e.layerX, e.layerY); */
     };
 
     that.canvasObj.onmousemove = function(e) {
-      if (that.drawObj.drawing) {
+     /*  if (that.drawObj.drawing) { */
         that.drawObj.setMovePoint(e.layerX, e.layerY);
-        that.drawObj.drawGraph();
-      }
+      /*   that.drawObj.drawGraph();
+      } */
     };
 
     that.canvasObj.onmouseup = function(e) {
-      if (that.drawObj.drawing) {
-        that.drawObj.setSavePoint(e.layerX, e.layerY);
-        that.drawObj.drawGraph();
-        that.drawObj.closeDraw();
-      }
+     /*  if (that.drawObj.drawing) { */
+       /*  that.drawObj.setSavePoint(e.layerX, e.layerY);
+        that.drawObj.drawGraph(); */
+        that.drawObj.closeDraw(e);
+    /*   } */
     };
+
+    that.canvasObj.onmouseout = function(e) {
+      
+    }
   };
 
   drawArea.prototype.destoryEvent = function() {
     this.canvasObj.onmousedown = null;
     this.canvasObj.onmousemove = null;
     this.canvasObj.onmouseup = null;
-    this.canvasObj.ondblclick = null;
   };
   return drawArea;
 })();
