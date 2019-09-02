@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <title>鼠标剪切图片工具</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      #canvas-contain {
+        width: 500px;
+        height: 400px;
+        background-color: #ebebeb;
+      }
+
+      .tool > span {
+        cursor: pointer;
+        color: #999;
+        border: 1px solid #999;
+        border-radius: 5px;
+        padding: 4px 5px;
+        margin: 5px;
+      }
+
+      .tool > span:hover {
+        color: #fff;
+        background-color: #0099cc;
+        border: 1px solid #0099cc;
+      }
+
+      .tool .active {
+        color: #fff;
+        background-color: #0099ff;
+        border: 1px solid #0099ff;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="canvas-contain"></div>
+    <!--  <script src="js/test.js"></script> -->
+    <script src="js/draw.js"></script>
+    <script src="js/rectangle.js"></script>
+    <script src="js/drawArea.js"></script>
+    <script src="js/dom.js"></script>
+  </body>
+</html>
