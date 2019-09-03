@@ -25,7 +25,7 @@ const Rectangle = (function() {
     this.drawing = true;
   };
   // 绘画过程数据
-  rectangle.prototype.Movedraw = function(e) {
+  rectangle.prototype.movedraw = function(e) {
     if (this.drawing) {
       const { layerX: mx, layerY: my } = e;
       Object.assign(this.position, { mx, my });
@@ -34,7 +34,7 @@ const Rectangle = (function() {
   };
   // 结束绘画
   rectangle.prototype.closedraw = function(e) {
-    this.Movedraw(e);
+    this.movedraw(e);
     this.drawing = false;
   };
 

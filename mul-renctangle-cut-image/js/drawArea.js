@@ -58,7 +58,7 @@ const DrawArea = (function() {
     };
 
     that.canvasObj.onmousemove = function(e) {
-      that.drawObj.Movedraw(e);
+      that.drawObj.movedraw(e);
     };
 
     that.canvasObj.onmouseup = function(e) {
