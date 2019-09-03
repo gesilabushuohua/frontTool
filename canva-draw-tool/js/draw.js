@@ -21,35 +21,16 @@ const Draw = (function() {
     this.drawing = false;
   };
 
-  //  设置开始位置
-  draw.prototype.setStartPoint = function() {};
-
-  //  设置结束位置
-  draw.prototype.setMovePoint = function() {};
-
-  //  设置结束位置
-  draw.prototype.setEndPoint = function() {};
-
   //  设置绘画样式
   draw.prototype.setDrawStyle = function() {
     this.context.lineWidth = '4';
     this.context.fillStyle = 'rgba(255,255,102,0.1)';
     this.context.strokeStyle = 'green';
   };
-  //  绘画图形
-  draw.prototype.drawGraph = function() {};
-
-  //  返回位置坐标
-  draw.prototype.getPosition = function() {};
 
   //  清理绘画区域
   draw.prototype.clearCanvas = function() {
     this.context.clearRect(0, 0, this.clientW, this.clientH);
-  };
-
-  // 测试代码
-  draw.prototype.sayStatues = function() {
-    console.log('sayStatues');
   };
 
   return draw;

@@ -3,59 +3,51 @@ const Polyline = (function() {
   function polyline(context, w, h) {
     this.position = [];
     this.movePoint = null;
-    this.closePolyline = false;
     Draw.call(this, context, w, h);
   }
-  //  设置继承
 
+  //  设置继承
   polyline.prototype = Object.create(Draw.prototype);
   polyline.prototype.constructor = polyline;
 
-  /*  let prototype = Object.create(Draw.prototype);
-  prototype.constructor = polyline;
-  polyline.prototype = prototype; */
-
-  //  设置开始位置
-  polyline.prototype.setStartPoint = function(x, y) {};
-
-  //  设置移动位置
-  polyline.prototype.setMovePoint = function(x, y) {
-    if (this.drawing) {
-      this.movePoint = { x, y };
-    }
-  };
-
-  polyline.prototype.setSavePoint = function(x, y) {
-    if (this.drawing) {
-      this.position.push({ x, y });
-    }
-  };
-
-  polyline.prototype.drawAreaPosition = function(position) {
-    if (position && position.length > 0) {
-      this.position = position;
+  // 开始绘画,及绘画下一点,判断是否结束绘画
+  polyline.prototype.openDraw = function(e) {
+    const { layerX: x, layerY: y } = e;
+    if (!this.drawing) {
+      this.position = [{ x, y }];
       this.drawing = true;
+    } else {
+      this.position.push({ x, y });
       this.drawGraph();
-      this.context.fill();
-      this.drawing = false;
+      this.closeDraw();
     }
   };
 
+  // 绘画过程数据
+  polyline.prototype.movedraw = function(e) {
+    if (this.drawing) {
+      const { layerX: x, layerY: y } = e;
+      this.movePoint = { x, y };
+      this.drawGraph();
+    }
+  };
+
+  // 根据绘画坐标绘画图形
   polyline.prototype.drawGraph = function() {
     let len = this.position.length;
     if (this.drawing && len > 0) {
       this.clearCanvas();
       this.setDrawStyle();
       this.context.beginPath();
-      let { x: startX, y: startY } = this.position[0];
-      this.context.moveTo(startX, startY);
+      let [{ x: sx, y: sy }] = this.position;
+      this.context.moveTo(sx, sy);
       this.position.forEach(point => {
         let { x, y } = point;
         this.context.lineTo(x, y);
       });
 
       if (this.closePolyline) {
-        this.context.lineTo(startX, startY);
+        this.context.lineTo(sx, sy);
       }
 
       if (this.movePoint) {
@@ -67,29 +59,43 @@ const Polyline = (function() {
     }
   };
 
-  // 判断节点是否结束,代码无效
+  // 根据传入参数绘画图形
+  polyline.prototype.drawAreaByPosition = function(param) {
+    if (param && param.length > 0) {
+      this.position = param;
+      this.closePolyline = true;
+      this.drawGraph();
+      this.context.fill();
+      this.closePolyline = false;
+    }
+  };
+
+  // 清除绘画及数据
+  polyline.prototype.resetCanvasAndPsition = function() {
+    this.position = {
+      sx: 0,
+      xy: 0,
+      mx: 0,
+      my: 0
+    };
+    this.clearCanvas();
+  };
+
+  // 判断节点是否结束
   polyline.prototype.judgeIsEndPoint = function() {
     let len = this.position.length;
-    if (len <= 0) {
-      return;
-    }
-    let { x: sx, y: sy } = this.position[0];
+    let [{ x: sx, y: sy }] = this.position;
     let { x: ex, y: ey } = this.position[len - 1];
 
     //  节点数大于3，点在5像素之内
-    if (len >= 3 && (Math.abs(sx - ex) < 5 || Math.abs(sy - ey) < 5)) {
+    if (len >= 3 && Math.abs(sx - ex) <= 10 && Math.abs(sy - ey) <= 10) {
       this.movePoint = null;
       return true;
     }
     return false;
   };
-  polyline.prototype.openDraw = function() {
-    if (!this.drawing) {
-      this.position = [];
-    }
-    this.drawing = true;
-  };
 
+  //将最后一点和第一点首尾相连，规范最后线段
   polyline.prototype.drawCloseLine = function() {
     this.position.pop();
     this.closePolyline = true;

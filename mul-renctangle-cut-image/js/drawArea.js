@@ -17,20 +17,31 @@ const DrawArea = (function() {
   let drawArea = function(contain, w, h) {
     this.canvasObj = _createCanvas(contain, w, h);
     let context = this.canvasObj.getContext('2d');
-    this.drawObj = new Rectangle(context, w, h);
+    this.drawType = {
+      polyline: new Polyline(context, w, h),
+      rectangle: new Rectangle(context, w, h),
+      circle: new Circle(context, w, h)
+    };
+    this.type = 'rectangle';
+    this.drawObj = this.drawType[this.type];
     this._initCanvasEvent();
   };
 
-  drawArea.prototype.drawAreaPosition = function(position) {
-    this.drawObj.drawAreaPosition(position);
+  drawArea.prototype.setDrawType = function(type) {
+    this.type = type;
+    this.drawObj = this.drawType[this.type];
+  };
+
+  drawArea.prototype.drawAreaByPosition = function(position) {
+    this.drawObj.drawAreaByPosition(position);
   };
 
   drawArea.prototype.getCanvasObj = function() {
     return this.canvasObj;
   };
 
-  drawArea.prototype.restPosition = function() {
-    this.drawObj.restPosition();
+  drawArea.prototype.resetCanvasAndPsition = function() {
+    this.drawObj.resetCanvasAndPsition();
   };
 
   drawArea.prototype.getPosition = function() {
@@ -40,23 +51,25 @@ const DrawArea = (function() {
   drawArea.prototype._initCanvasEvent = function() {
     let that = this;
     that.canvasObj.onmousedown = function(e) {
-      //  根据绘画状态，清空存储数据
-      that.drawObj.openDraw();
-      that.drawObj.setStartPoint(e.layerX, e.layerY);
+      that.drawObj.openDraw(e);
+      /* if (that.type !== 'polyline') {
+        that.drawObj.setStartPoint(e.layerX, e.layerY);
+      } */
     };
 
     that.canvasObj.onmousemove = function(e) {
-      if (that.drawObj.drawing) {
-        that.drawObj.setMovePoint(e.layerX, e.layerY);
-        that.drawObj.drawGraph();
-      }
+      that.drawObj.Movedraw(e);
     };
 
     that.canvasObj.onmouseup = function(e) {
-      if (that.drawObj.drawing) {
-        that.drawObj.setSavePoint(e.layerX, e.layerY);
-        that.drawObj.drawGraph();
-        that.drawObj.closeDraw();
+      if (that.type !== 'polyline') {
+        that.drawObj.closedraw(e);
+      }
+    };
+
+    that.canvasObj.onmouseout = function(e) {
+      if (that.type !== 'polyline') {
+        that.drawObj.closeDraw(e);
       }
     };
   };
@@ -65,7 +78,8 @@ const DrawArea = (function() {
     this.canvasObj.onmousedown = null;
     this.canvasObj.onmousemove = null;
     this.canvasObj.onmouseup = null;
-    this.canvasObj.ondblclick = null;
+    this.canvasObj.onmouseout = null;
   };
+
   return drawArea;
 })();

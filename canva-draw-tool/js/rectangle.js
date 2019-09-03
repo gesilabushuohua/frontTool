@@ -7,76 +7,69 @@ const Rectangle = (function() {
   function rectangle(context, w, h) {
     Draw.call(this, context, w, h);
     this.position = {
-      startX: 0,
-      startY: 0,
-      moveX: 0,
-      moveY: 0
+      sx: 0,
+      xy: 0,
+      mx: 0,
+      my: 0
     };
   }
-  //  设置继承
-  /* 
-  直接使用 Draw 属性，修改Draw属性，继承子类覆盖之前所有属性
-  rectangle.prototype = Draw.prototype;
-  rectangle.prototype.constructor = rectangle;
- */
 
   //  创建对象副本，修改属性，不影响父级
   rectangle.prototype = Object.create(Draw.prototype);
   rectangle.prototype.constructor = rectangle;
 
-  //  设置开始位置
-  rectangle.prototype.setStartPoint = function(startX, startY) {
-    if (!this.drawing) {
-      this.position = {
-        startX: 0,
-        startY: 0,
-        moveX: 0,
-        moveY: 0
-      };
+  // 开始绘画
+  rectangle.prototype.openDraw = function(e) {
+    const { layerX: sx, layerY: sy } = e;
+    Object.assign(this.position, { sx, sy });
+    this.drawing = true;
+  };
+  // 绘画过程数据
+  rectangle.prototype.movedraw = function(e) {
+    if (this.drawing) {
+      const { layerX: mx, layerY: my } = e;
+      Object.assign(this.position, { mx, my });
+      this.drawGraph();
     }
-    Object.assign(this.position, {
-      startX,
-      startY
-    });
+  };
+  // 结束绘画
+  rectangle.prototype.closedraw = function(e) {
+    this.movedraw(e);
+    this.drawing = false;
   };
 
-  //  设置结束位置
-  rectangle.prototype.setMovePoint = function(moveX, moveY) {
-    Object.assign(this.position, {
-      moveX,
-      moveY
-    });
+  // 根据绘画坐标绘画图形
+  rectangle.prototype.drawGraph = function() {
+    let { sx, sy, mx, my } = this.position;
+    let x = compareMin(sx, mx);
+    let y = compareMin(sy, my);
+    let w = Math.abs(sx - mx);
+    let h = Math.abs(sy - my);
+    this.clearCanvas();
+    this.setDrawStyle();
+    this.context.fillRect(x, y, w, h);
+    this.context.strokeRect(x, y, w, h);
   };
 
-  //  设置结束位置
-  rectangle.prototype.setSavePoint = function(moveX, moveY) {
-    Object.assign(this.position, {
-      moveX,
-      moveY
-    });
-  };
-
-  rectangle.prototype.drawAreaPosition = function(position) {
-    this.position = position;
+  // 根据传入参数绘画图形
+  rectangle.prototype.drawAreaByPosition = function(param) {
+    this.position = param;
     this.drawGraph();
   };
 
-  rectangle.prototype.drawGraph = function() {
-    if (this.drawing) {
-      let { startX, startY, moveX, moveY } = this.position;
-      let x = compareMin(startX, moveX);
-      let y = compareMin(startY, moveY);
-      let w = Math.abs(startX - moveX);
-      let h = Math.abs(startY - moveY);
-      this.clearCanvas();
-      this.setDrawStyle();
-      this.context.fillRect(x, y, w, h);
-      this.context.strokeRect(x, y, w, h);
-    }
+  // 清除绘画及数据
+  rectangle.prototype.resetCanvasAndPsition = function() {
+    this.position = {
+      sx: 0,
+      xy: 0,
+      mx: 0,
+      my: 0
+    };
+    this.clearCanvas();
   };
 
-  //  获取
-  rectangle.prototype.getPosition = function(moveX, moveY) {
+  // 获取绘画数据
+  rectangle.prototype.getPosition = function() {
     return this.position;
   };
 
