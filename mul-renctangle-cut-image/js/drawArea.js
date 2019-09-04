@@ -17,6 +17,7 @@ const DrawArea = (function() {
   let drawArea = function(contain, w, h) {
     this.canvasObj = _createCanvas(contain, w, h);
     let context = this.canvasObj.getContext('2d');
+<<<<<<< HEAD
     this.drawType = {
       polyline: new Polyline(context, w, h),
       rectangle: new Rectangle(context, w, h),
@@ -32,6 +33,13 @@ const DrawArea = (function() {
     this.drawObj = this.drawType[this.type];
   };
 
+=======
+    this.drawObj = new Rectangle(context, w, h);
+    this.drawObj.setMultiple();
+    this._initCanvasEvent();
+  };
+
+>>>>>>> 87b76a74a8bc91bd7685ec2ea88719575efddff1
   drawArea.prototype.drawAreaByPosition = function(position) {
     this.drawObj.drawAreaByPosition(position);
   };
@@ -52,6 +60,7 @@ const DrawArea = (function() {
     let that = this;
     that.canvasObj.onmousedown = function(e) {
       that.drawObj.openDraw(e);
+<<<<<<< HEAD
       /* if (that.type !== 'polyline') {
         that.drawObj.setStartPoint(e.layerX, e.layerY);
       } */
@@ -71,7 +80,21 @@ const DrawArea = (function() {
       if (that.type !== 'polyline') {
         that.drawObj.closeDraw(e);
       }
+=======
     };
+
+    that.canvasObj.onmousemove = function(e) {
+        that.drawObj.moveDraw(e);
+    };
+
+    that.canvasObj.onmouseup = function(e) {
+        that.drawObj.closeDraw(e);
+>>>>>>> 87b76a74a8bc91bd7685ec2ea88719575efddff1
+    };
+
+    that.canvasObj.onmouseout = function(e) {
+      that.drawObj.setcloseDrawing();
+    }
   };
 
   drawArea.prototype.destoryEvent = function() {
