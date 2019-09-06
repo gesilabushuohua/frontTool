@@ -11,16 +11,23 @@ const DrawArea = (function() {
     canvas.width = w;
     canvas.height = h;
     canvas.style = 'position:absolute;z-index:10;';
+    console.log([contain]);
     contain.appendChild(canvas);
     return canvas;
   }
 
   let drawArea = function(contain, w, h) {
+    console.log('drawArea', [contain]);
     this.contain = contain;
     this.canvasObj = _createCanvas(contain, w, h);
     this.context = this.canvasObj.getContext('2d');
     this.drawObj = new Rectangle(this.context, w, h);
     this._initCanvasEvent();
+  };
+
+  drawArea.prototype.upSize = function(w, h) {
+    this.canvasObj.width = w;
+    this.canvasObj.height = h;
   };
 
   drawArea.prototype.setMultiple = function() {

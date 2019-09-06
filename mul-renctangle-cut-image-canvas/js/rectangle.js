@@ -219,5 +219,10 @@ const Rectangle = (function() {
     return this.positions;
   };
 
+  rectangle.prototype.resetCanvasAndPsition = function() {
+    this.position = [];
+    this.clearCanvas();
+  };
+
   return rectangle;
 })();

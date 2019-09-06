@@ -35,12 +35,17 @@
         height: 300px;
         border: 1px solid #eebbee;
       }
+
+      #cut-list img {
+        width: auto;
+        height: 100px;
+      }
     </style>
   </head>
   <body>
     <div style="display: flex">
       <div id="origin-contain">
-        <img src="test.png" />
+        <img src="./test.png" />
       </div>
       <div id="cut-contain"></div>
     </div>
@@ -55,6 +60,7 @@
     <script src="js/draw.js"></script>
     <script src="js/rectangle.js"></script>
     <script src="js/drawArea.js"></script>
+    <script src="js/rectCutControl.js"></script>
     <script src="js/dom.js"></script>
   </body>
 </html>
