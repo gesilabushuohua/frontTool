@@ -1,10 +1,10 @@
 (function() {
-  let imageContain = document.getElementById('origin-img');
-  let sliderContain = document.getElementById('carFrame');
-  let showContain = document.getElementById('car-image');
-  let magnifiner = new ImageMagnifiner(
-    imageContain,
-    sliderContain,
-    showContain
-  );
+  let contain = document.getElementById('car-image');
+  let imageTagName = 'origin-img';
+  let magnifiner = new ImageMagnifiner(contain, imageTagName);
+
+  let contain2 = document.getElementById('list');
+  let imageTagName2 = 'hover';
+  let magnifiner2 = new ImageMagnifiner(contain2, imageTagName2);
+  magnifiner2.setNextMoveType();
 })();

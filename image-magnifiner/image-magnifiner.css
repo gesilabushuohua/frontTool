@@ -8,6 +8,7 @@
     ),
     linear-gradient(rgba(0, 0, 0, 1) 10%, rgba(0, 0, 0, 0) 10%);
   background-size: 7px 7px;
+  cursor: move;
 }
 
 .show-box {

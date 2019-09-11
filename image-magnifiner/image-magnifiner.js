@@ -9,48 +9,30 @@
  sliderSize 滑块大小
  */
 const ImageMagnifiner = (function() {
-  function judgeRange(value, min, max) {
-    let result = 0;
-    if (value < min) {
-      result = min;
-    } else if (value > max) {
-      result = max;
-    } else {
-      result = value;
-    }
-    return result;
-  }
-
-  function judgePolyPositonRange(left, top, parentDom, dom) {
-    let { clientWidth: parentW, clientHeight: parentH } = parentDom;
-    let { clientWidth: domW, clientHeight: domH } = dom;
-    const minLfet = 0;
-    const minTop = 0;
-    const maxLfet = parentW - domW;
-    const maxTop = parentH - domH;
-    return {
-      left: judgeRange(left, minLfet, maxLfet),
-      top: judgeRange(top, minTop, maxTop)
-    };
-  }
-
   //默认参数
-  const defaultMagification = 2;
+  const defaultMagification = 4;
   const defaultSliderSize = 50;
   const defaultShowSize = defaultSliderSize * defaultMagification;
   class Magifiner {
-    constructor(imageContain, sliderContain, showContain) {
-      this.imageContain = imageContain;
-      this.sliderContain = sliderContain;
-      this.showContain = showContain;
+    constructor(contain, imageTagName) {
+      this.contain = contain;
+      contain.style.position = 'relative';
+      this.imageTagName = imageTagName;
       this.magification = defaultMagification;
       this.sliderSize = defaultSliderSize;
       this.showSize = defaultShowSize;
+
       //滑块是否允许滑动
       this.isSliderMove = false;
       this.initSliderContainEvent();
       this.createSliderBox();
       this.createShowBox();
+
+      this.moveObj = new MoveInnerPositioon(
+        contain,
+        this.sliderBox,
+        this.showBox
+      );
     }
 
     /* setMagifiner(magification) {
@@ -63,65 +45,91 @@ const ImageMagnifiner = (function() {
       this.showSize = this.magification*this.sliderSize;
     } */
 
+    setInnerMoveType() {
+      this.moveObj = new MoveInnerPositioon(
+        this.contain,
+        this.sliderBox,
+        this.showBox
+      );
+    }
+
+    setNextMoveType() {
+      this.moveObj = new MoveToNextPositioon(
+        this.contain,
+        this.sliderBox,
+        this.showBox
+      );
+    }
+
     //滑块容器，添加鼠标移入、移出事件
     initSliderContainEvent() {
       //清空之前绑定
       this.destorySliderContainEvent();
       //移入事件，显示滑块、展示图片
-      this.sliderContain.onmouseover = this.showSliderShowImage.bind(this);
+      this.contain.onmouseover = this.containBoxMouseOver.bind(this);
       //移出事件，隐藏滑块，展示图片
-      this.sliderContain.onmouseleave = this.hiddenSliderShowImage.bind(this);
-
-      //解决 拖拽鼠标在滑块外，移动、松开事件
-      let containParen = this.sliderContain.parentElement;
-      //移动事件，移动滑块，切换图片展示区域
-      containParen.onmousemove = this.sliderBoxMove.bind(this);
-      document.onmouseup = this.sliderBoxMouseUp.bind(this);
+      this.contain.onmouseleave = this.hiddenSliderShowImage.bind(this);
     }
 
     //滑块容器，移除鼠标移入、移出事件
     destorySliderContainEvent() {
-      this.sliderContain.onmouseover = null;
-      this.sliderContain.onmouseleave = null;
-      //解决 拖拽鼠标在滑块外，移动、松开事件
-      let containParen = this.sliderContain.parentElement;
-      containParen.onmousemove = null;
-      document.onmouseup = null;
+      this.contain.onmouseover = null;
+      this.contain.onmouseleave = null;
     }
 
     //创建滑块鼠标 点击、松开事件,点击注册
     initSliderBoxEvent() {
       this.destorySliderBoxEvent();
       this.sliderBox.onmousedown = this.sliderBoxMousedown.bind(this);
+      //解决 拖拽鼠标在滑块外，移动、松开事件
+      let containParen = this.contain.parentElement;
+      //移动事件，移动滑块，切换图片展示区域
+      this.contain.onmousemove = this.sliderBoxMove.bind(this);
+      containParen.onmouseup = this.sliderBoxMouseUp.bind(this);
     }
 
     //销毁滑块鼠标 点击、移动、松开事件
     destorySliderBoxEvent() {
       this.sliderBox.onmousedown = null;
+      //解决 拖拽鼠标在滑块外，移动、松开事件
+      let containParen = this.contain.parentElement;
+      this.contain.onmousemove = null;
+      containParen.onmouseup = null;
+    }
+
+    containBoxMouseOver(e) {
+      e.stopPropagation();
+      let dom = e.target;
+      let toElement = e.toElement;
+      // 特殊标签，针对当前情况
+      let special = document.getElementById('carFrame');
+      if (dom.className.indexOf(this.imageTagName) > -1) {
+        this.imageContain = dom;
+        if (this.moveObj.setImageContain) {
+          //移动到相邻位置，设置图片位置信息
+          this.moveObj.setImageContain(dom);
+        }
+        //加载图片
+        this.loadImage();
+        this.showSliderShowImage(e);
+      } else if (
+        toElement !== this.sliderBox &&
+        toElement !== this.showBox &&
+        toElement !== this.showImage
+      ) {
+        if (toElement === special) {
+          return;
+        }
+        this.hiddenSliderShowImage(e);
+      }
     }
 
     // 显示滑块，展示图片
     showSliderShowImage(e) {
       e.stopPropagation();
-      let dom = e.target;
-      let formDom = e.fromElement;
-      let toDom = e.toElement;
-      const isBoxToContain =
-        formDom === this.sliderBox && toDom === this.sliderContain;
-      const isContainToBox =
-        formDom === this.sliderContain && toDom === this.sliderBox;
-
-      //鼠标移动到滑块上，结束
-      if (isBoxToContain || isContainToBox) {
-        return;
-      }
-
       //显示图片容器
       this.sliderBox.style.display = 'block';
       this.showBox.style.display = 'block';
-
-      //添加滑块鼠标点击事件
-      this.initSliderBoxEvent();
       //初始化滑块坐标，记录坐标起始位置，移动位置
       if (!this.sliderBoxPosition) {
         this.sliderBoxPosition = {
@@ -131,14 +139,17 @@ const ImageMagnifiner = (function() {
           my: 0
         };
       }
-      //加载图片
-      this.loadImage();
-      //判断图片容器位置
-      this.moveShowBoxToPosition();
-      //显示滑块，起始位置位于左上角
-      this.moveSliderBoxToPosition();
+      /*  let { offsetLeft: sliderLeft, offsetTop: sliderTop } = this.sliderBox; */
+      //添加滑块鼠标点击事件
+      this.initSliderBoxEvent();
+
+      //移动滑块位置
+      let { left, top } = this.moveObj.moveSliderBoxToPosition({
+        ...this.sliderBoxPosition
+      });
       //判断展示图片区域
-      this.moveShowImageToPosition();
+      this.moveObj.moveShowBoxToPosition();
+      this.moveShowImageToPosition(left, top);
     }
 
     //隐藏滑块，展示图片
@@ -152,7 +163,7 @@ const ImageMagnifiner = (function() {
       this.destorySliderBoxEvent();
       //隐藏滑块
       //隐藏展示容器
-      //this.sliderBox.style.display = 'none';
+      this.sliderBox.style.display = 'none';
       this.showBox.style.display = 'none';
     }
 
@@ -188,14 +199,19 @@ const ImageMagnifiner = (function() {
       e.preventDefault();
       if (this.isSliderMove) {
         let { movementX, movementY } = e;
-        let { mx, my } = this.sliderBoxPosition;
+        let { sx, sy, mx, my } = this.sliderBoxPosition;
         mx = mx + movementX;
         my = my + movementY;
-        Object.assign(this.sliderBoxPosition, { mx, my });
-        //根据滑动距离，判断滑块移动后位置，mousedomn position
-        this.moveSliderBoxToPosition();
+
+        let { left, top } = this.moveObj.sliderBoxMove({
+          sx,
+          sy,
+          mx,
+          my
+        });
         //根据滑动距离，判断展示细节图片局部位置
-        this.moveShowImageToPosition();
+        this.moveShowImageToPosition(left, top);
+        Object.assign(this.sliderBoxPosition, { mx, my });
       }
     }
 
@@ -209,6 +225,7 @@ const ImageMagnifiner = (function() {
         mx: 0,
         my: 0
       };
+
       this.showImage.src = this.imageContain.src;
       const { clientWidth, clientHeight } = this.imageContain;
       let sw = clientWidth * this.magification;
@@ -216,40 +233,19 @@ const ImageMagnifiner = (function() {
       this.showImage.style = `position:absolute;width:${sw}px;height:${sh}px`;
     }
 
-    moveSliderBoxToPosition() {
-      let { sx, sy, mx, my } = this.sliderBoxPosition;
-      let diffX = sx + mx;
-      let diffY = sy + my;
-      let { left, top } = judgePolyPositonRange(
-        diffX,
-        diffY,
-        this.sliderContain,
-        this.sliderBox
-      );
-      this.sliderBox.style.left = `${left}px`;
-      this.sliderBox.style.top = `${top}px`;
+    moveShowImageToPosition(sliderLeft, sliderTop) {
+      let sLeft = sliderLeft * this.magification;
+      let sTop = sliderTop * this.magification;
+      this.showImage.style.left = `${-sLeft}px`;
+      this.showImage.style.top = `${-sTop}px`;
     }
 
-    moveShowImageToPosition() {
-      let { sx, sy, mx, my } = this.sliderBoxPosition;
-      let { offsetLeft: pLeft, offsetTop: pTop } = this.sliderContain;
-
-      let sLeft = (pLeft + sx + mx) * this.magification;
-      let sTop = (pTop + sy + my) * this.magification;
-      let { left, top } = judgePolyPositonRange(
-        sLeft,
-        sTop,
-        this.showImage,
-        this.showBox
-      );
-      this.showImage.style.left = `${-left}px`;
-      this.showImage.style.top = `${-top}px`;
-    }
-
+    //该方法只适用于图片内嵌局部区域，无效
     moveShowBoxToPosition() {
       //判断展示图片位置
       let x = 0,
         y = 0;
+      const spaceSize = 10;
       const domW = this.showSize;
       const domH = this.showSize;
       const { offsetWidth: parentW, offsetHeight: parentH } = this.imageContain;
@@ -258,7 +254,7 @@ const ImageMagnifiner = (function() {
         offsetTop: sliderT,
         offsetWidth: sliderW,
         offsetHeight: sliderH
-      } = this.sliderContain;
+      } = this.contain;
       // 展示容器 d shoxBox、展示容器父级 showContain p、待放大区域 s sliderContain,（禁止放置区域暂定，检索对比图）
       // 右侧   sl + sw + dw < pw  left = pw - dw
       const right = sliderL + sliderW + domW < parentW;
@@ -268,6 +264,9 @@ const ImageMagnifiner = (function() {
       // 上下侧区域条件
       // 下侧  st + sh + dh < ph  top = ph - dh
       const bottom = sliderT + sliderH + domH < parentH;
+
+      // 中间
+      const middleT = sliderT + domH + spaceSize < parentH;
       // 上侧  dh < st  top = 0
       // 不满足 top = -dh
       const top = domH < sliderT;
@@ -283,8 +282,8 @@ const ImageMagnifiner = (function() {
         y = parentH - domH;
       } else if (top) {
         y = 0;
-      } else {
-        y = -domH;
+      } else if (middleT) {
+        y = sliderT + spaceSize;
       }
       this.showBox.style.left = `${x}px`;
       this.showBox.style.top = `${y}px`;
@@ -296,8 +295,8 @@ const ImageMagnifiner = (function() {
       sliderBox.style.width = `${this.sliderSize}px`;
       sliderBox.style.height = `${this.sliderSize}px`;
       sliderBox.classList = 'slider-box';
-      this.sliderContain.appendChild(sliderBox);
-      //sliderBox.style.display = 'none';
+      this.contain.appendChild(sliderBox);
+      sliderBox.style.display = 'none';
       this.sliderBox = sliderBox;
     }
 
@@ -309,7 +308,7 @@ const ImageMagnifiner = (function() {
       showBox.classList = 'show-box';
       let showImage = document.createElement('IMG');
       showBox.appendChild(showImage);
-      this.showContain.appendChild(showBox);
+      this.contain.appendChild(showBox);
       this.showImage = showImage;
       showBox.style.display = 'none';
       this.showBox = showBox;
