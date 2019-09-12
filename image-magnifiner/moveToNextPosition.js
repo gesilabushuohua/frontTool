@@ -53,23 +53,21 @@ const MoveToNextPositioon = (function() {
         offsetTop: domTop,
         offsetWidth: domW
       } = this.imageContain;
-      let previous = this.imageContain.previousElementSibling;
-      let next = this.imageContain.nextElementSibling;
-      let { offsetWidth: parentW, scrollTop } = this.contain;
-      const isShowRight = parentW > domLeft + 2 * domW;
-      if (isShowRight && next && next !== this.sliderBox) {
-        let { offsetLeft: nextLeft, offsetTop: nextTop } = next;
-        x = nextLeft;
-        y = nextTop;
-      }
-      if (isShowRight && next === this.sliderBox) {
+      let { offsetWidth: parentW, offsetHeight: parentH } = this.contain;
+      let { offsetWidth: showBoxW, offsetHeight: showBoxH } = this.showBox;
+      const isShowRight = parentW > domLeft + domW + showBoxW;
+      const isShowBottom = parentH > domTop + showBoxH;
+      if (isShowRight) {
         x = domLeft + domW;
         y = domTop;
+      } else {
+        x = domLeft - showBoxW;
       }
-      if (!isShowRight && previous) {
-        let { offsetLeft: preLeft, offsetTop: preTop } = previous;
-        x = preLeft;
-        y = preTop;
+      console.log(parentH, domTop + showBoxH);
+      if (isShowBottom) {
+        y = domTop;
+      } else {
+        y = domTop + domH - showBoxH;
       }
       this.showBox.style.left = `${x}px`;
       this.showBox.style.top = `${y}px`;
