@@ -27,7 +27,7 @@ const MoveToNextPositioon = (function() {
       let { sx, sy, mx, my } = sliderBoxPosition;
       let diffX = sx + mx;
       let diffY = sy + my;
-      let { left, top } = judgePolyPositonRange(
+      let { left, top } = judgeSliderPositonRange(
         diffX,
         diffY,
         this.imageContain,
@@ -37,7 +37,6 @@ const MoveToNextPositioon = (function() {
       y = domTop + top;
       this.sliderBox.style.left = `${x}px`;
       this.sliderBox.style.top = `${y}px`;
-
       return { left, top };
     }
 
@@ -63,7 +62,6 @@ const MoveToNextPositioon = (function() {
       } else {
         x = domLeft - showBoxW;
       }
-      console.log(parentH, domTop + showBoxH);
       if (isShowBottom) {
         y = domTop;
       } else {

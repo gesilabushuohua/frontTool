@@ -10,8 +10,8 @@
  */
 const ImageMagnifiner = (function() {
   //默认参数
-  const defaultMagification = 2;
-  const defaultSliderSize = 100;
+  const defaultMagification = 4;
+  const defaultSliderSize = 60;
   const defaultShowSize = defaultSliderSize * defaultMagification;
   class Magifiner {
     constructor(contain, imageTagName) {
@@ -21,9 +21,6 @@ const ImageMagnifiner = (function() {
       this.magification = defaultMagification;
       this.sliderSize = defaultSliderSize;
       this.showSize = defaultShowSize;
-
-      /*   //滑块是否允许滑动
-      this.isSliderMove = false; */
       this.initSliderContainEvent();
       this.createSliderBox();
       this.createShowBox();
@@ -73,24 +70,16 @@ const ImageMagnifiner = (function() {
       this.contain.onmouseleave = null;
     }
 
-    //创建滑块鼠标 点击、松开事件,点击注册
+    //创建滑块鼠标 滑动事件
     initSliderBoxEvent() {
       this.destorySliderBoxEvent();
-      /*   this.sliderBox.onmousedown = this.sliderBoxMousedown.bind(this); */
-      //解决 拖拽鼠标在滑块外，移动、松开事件
-      let containParen = this.contain.parentElement;
-      //移动事件，移动滑块，切换图片展示区域
       this.contain.onmousemove = this.sliderBoxMove.bind(this);
-      /*  containParen.onmouseup = this.sliderBoxMouseUp.bind(this); */
     }
 
     //销毁滑块鼠标 点击、移动、松开事件
     destorySliderBoxEvent() {
-      /*    this.sliderBox.onmousedown = null; */
-      //解决 拖拽鼠标在滑块外，移动、松开事件
-      let containParen = this.contain.parentElement;
+      //滑块移动事件
       this.contain.onmousemove = null;
-      /*   containParen.onmouseup = null; */
     }
 
     containBoxMouseOver(e) {
@@ -137,9 +126,8 @@ const ImageMagnifiner = (function() {
       }
 
       // 设置起始位置，初始化移动位置
-      let { layerX: sx, layerY: sy } = e;
+      let { offsetX: sx, offsetY: sy } = e;
       Object.assign(this.sliderBoxPosition, { sx, sy, mx: 0, my: 0 });
-
       //添加滑块鼠标点击事件
       this.initSliderBoxEvent();
 
@@ -164,22 +152,11 @@ const ImageMagnifiner = (function() {
       this.showBox.style.display = 'none';
     }
 
-    //滑块鼠标压下事件，开始拖拽滑块
-    sliderBoxMousedown(e) {
-      e.stopPropagation();
-      e.preventDefault();
-      // 设置起始位置，初始化移动位置
-      let mx = 0,
-        my = 0;
-      Object.assign(this.sliderBoxPosition, { mx, my });
-    }
-
-    //滑块鼠标松开事件，结束拖拽滑块
-    sliderBoxMouseUp(e) {
-      this.stopSlideBoxMove();
-    }
-
     stopSlideBoxMove() {
+      if (!this.sliderBoxPosition) {
+        this.sliderBoxPosition = { sx: 0, sy: 0, mx: 0, my: 0 };
+        return;
+      }
       let { sx, sy, mx, my } = this.sliderBoxPosition;
       sx = sx + mx;
       sy = sy + my;

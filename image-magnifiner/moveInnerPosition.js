@@ -15,27 +15,16 @@ const MoveInnerPositioon = (function() {
 
     moveSliderBoxToPosition(sliderBoxPosition) {
       let { sx, sy, mx, my } = sliderBoxPosition;
-      let { offsetWidth: sliderW, offsetHeight: sliderH } = this.sliderBox;
       let diffX = sx + mx;
       let diffY = sy + my;
-      let { left, top } = judgePolyPositonRange(
+      let { left, top } = judgeSliderPositonRange(
         diffX,
         diffY,
         this.contain,
         this.sliderBox
       );
-      /*  let { left: moveX, top: moveY } = judgePolyPositonRange(
-        left - sliderW / 2,
-        top - sliderH / 2,
-        this.contain,
-        this.sliderBox
-      ); */
-
-      let moveX = left - sliderW / 2;
-      let moveY = top - sliderH / 2;
-      this.sliderBox.style.left = `${moveX}px`;
-      this.sliderBox.style.top = `${moveY}px`;
-      console.log({ left, top, moveX, moveY });
+      this.sliderBox.style.left = `${left}px`;
+      this.sliderBox.style.top = `${top}px`;
       return { left, top };
     }
 
