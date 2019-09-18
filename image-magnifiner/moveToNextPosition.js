@@ -1,4 +1,4 @@
-const MoveToNextPositioon = (function() {
+const MoveToNextPosition = (function() {
   class Move {
     constructor(contain, sliderBox, showBox) {
       this.contain = contain;

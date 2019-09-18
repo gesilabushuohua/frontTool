@@ -47,6 +47,15 @@
         margin: 10px 20px;
         border: 1px solid;
       }
+
+      #showbox {
+        position: absolute;
+        border: 1px solid #000;
+        width: 300px;
+        height: 300px;
+        left: 200px;
+        top: 0;
+      }
     </style>
   </head>
   <body>
@@ -54,6 +63,8 @@
       <img id="origin-img" class="origin-img" src="./3.jpg" />
       <div id="carFrame" class="car-frame"></div>
     </div>
+
+    <div id="showbox"></div>
 
     <div id="list">
       <img class="hover" src="./2.jpg" />
@@ -88,6 +99,7 @@
     <script src="./util.js"></script>
     <script src="./moveInnerPosition.js"></script>
     <script src="./moveToNextPosition.js"></script>
+    <script src="./moveAppointPosition.js"></script>
     <script src="./image-magnifiner.js"></script>
     <script src="./dom.js"></script>
   </body>

@@ -1,5 +1,5 @@
 // 展示图片在大图内部
-const MoveInnerPositioon = (function() {
+const MoveInnerPosition = (function() {
   class Move {
     constructor(contain, sliderBox, showBox) {
       this.contain = contain;

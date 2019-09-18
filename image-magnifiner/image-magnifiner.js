@@ -28,18 +28,27 @@ const ImageMagnifiner = (function() {
       this.setInnerMoveType();
     }
 
-    /* setMagifiner(magification) {
+    setMagifiner(magification) {
       this.magification = magification;
-      this.showSize = this.magification*this.sliderSize;
+      this.showSize = this.magification * this.sliderSize;
+      this.updateSize();
     }
 
     setSliderSize(sliderSize) {
       this.sliderSize = sliderSize;
-      this.showSize = this.magification*this.sliderSize;
-    } */
+      this.showSize = this.magification * this.sliderSize;
+      this.updateSize();
+    }
+
+    setMagifinerAndSliderSize(magification, sliderSize) {
+      this.magification = magification;
+      this.sliderSize = sliderSize;
+      this.showSize = this.magification * this.sliderSize;
+      this.updateSize();
+    }
 
     setInnerMoveType() {
-      this.moveObj = new MoveInnerPositioon(
+      this.moveObj = new MoveInnerPosition(
         this.contain,
         this.sliderBox,
         this.showBox
@@ -47,11 +56,33 @@ const ImageMagnifiner = (function() {
     }
 
     setNextMoveType() {
-      this.moveObj = new MoveToNextPositioon(
+      this.isNewShowBox = false;
+      this.moveObj = new MoveToNextPosition(
         this.contain,
         this.sliderBox,
         this.showBox
       );
+    }
+
+    setAppointMoveType(showBox) {
+      this.isNewShowBox = false;
+      this.updateContainShowBox(showBox);
+      this.moveObj = new MoveAppointPosition(
+        this.contain,
+        this.sliderBox,
+        this.showBox
+      );
+    }
+
+    updateContainShowBox(showBox) {
+      this.isNewShowBox = true;
+      let oldBox = this.showBox;
+      showBox.classList = 'show-box';
+      showBox.style.width = `${this.showSize}px`;
+      showBox.style.height = `${this.showSize}px`;
+      this.showBox = showBox;
+      this.showBox.appendChild(this.showImage);
+      this.contain.removeChild(oldBox);
     }
 
     //滑块容器，添加鼠标移入、移出事件
@@ -148,8 +179,10 @@ const ImageMagnifiner = (function() {
       this.destorySliderBoxEvent();
       //隐藏滑块
       //隐藏展示容器
-      this.sliderBox.style.display = 'none';
-      this.showBox.style.display = 'none';
+      if (!this.isNewShowBox) {
+        this.sliderBox.style.display = 'none';
+        this.showBox.style.display = 'none';
+      }
     }
 
     stopSlideBoxMove() {
@@ -282,6 +315,13 @@ const ImageMagnifiner = (function() {
       this.showImage = showImage;
       showBox.style.display = 'none';
       this.showBox = showBox;
+    }
+
+    updateSize() {
+      this.showBox.style.width = `${this.showSize}px`;
+      this.showBox.style.height = `${this.showSize}px`;
+      this.sliderBox.style.width = `${this.sliderSize}px`;
+      this.sliderBox.style.height = `${this.sliderSize}px`;
     }
   }
 
