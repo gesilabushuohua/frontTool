@@ -4,11 +4,11 @@
     <title>circle process</title>
     <style>
       .circle {
-        position: relative;
-        font-size: 200px;
+        position: absolute;
+        font-size: 35px;
         width: 1em;
         height: 1em;
-        background-color: #ebebeb;
+        background-color: #f5f5f5;
       }
       .circle .left,
       .circle .right {
@@ -19,25 +19,33 @@
       .circle .left {
         clip: rect(0, 0.5em, auto, 0);
         transform: rotate(0deg);
-        background-image: linear-gradient(to right, red, yellow, red);
+        /* 橙色、蓝色、灰色 */
+        /*  background: linear-gradient(#f36722, #f5821e); */
+        /*  background: linear-gradient(#167c86, #1b7e90); */
       }
 
       .circle .right {
         clip: rect(0, auto, auto, 0.5em);
         transform: rotate(0deg);
-        background-image: linear-gradient(to right, red, yellow, red);
+        /* background: linear-gradient(#f3d18f, #f5821e); */
+        /*  background: linear-gradient(#308ba3, #1b7e90); */
+        /* background: linear-gradient(#fefefe, #d1d1d1); */
       }
 
       .circle .center {
-        width: 0.7em;
-        height: 0.7em;
+        width: 0.8em;
+        height: 0.8em;
         text-align: center;
-        line-height: 0.7em;
+        line-height: 0.8em;
         background-color: #fff;
       }
 
       .circle .center > span {
-        font-size: 20px;
+        font-size: 0.2em;
+        /* color: #f36722; */
+        /*  color: #167c86; */
+        /*   color: #d1d1d1; */
+        font-weight: bold;
       }
 
       .circle * {
@@ -52,26 +60,63 @@
       .circle > * {
         border-radius: 50%;
       }
-
-      /* 
-      小于50%
-      left 背景色同 父级背景色
-      right -180 deg
-
-      大于50%
-      left -180 deg
-      right 0
-       */
     </style>
   </head>
 
   <body>
     <div class="circle">
-      <div class="left"></div>
+      <!--   百分比0从右侧开始，便于后声明的left遮盖，遮住右侧 -->
       <div class="right"></div>
+      <div class="left"></div>
+
       <div class="center">
-        <span>80%</span>
+        <span>80</span>
       </div>
     </div>
+    <script>
+      window.onload = function() {
+        /* 
+      小于50%
+      rigth 背景色同 父级背景色
+      left   percent*3.6-180 deg 
+
+      大于50%
+      left 0
+      right percent*3.6- 180 deg 
+
+       */
+        const setPercent = function(percent) {
+          let left = document.getElementsByClassName('left')[0];
+          let right = document.getElementsByClassName('right')[0];
+          let text = document.getElementsByClassName('center')[0].children[0];
+          if (percent < 0) {
+            percent = 0;
+          }
+          if (percent > 100) {
+            percent = 100;
+          }
+          if (percent <= 50) {
+            let rotate = percent * 3.6 - 180;
+            left.style = `background-color:#f5f5f5;`;
+            right.style = `transform: rotate(${rotate}deg);background: linear-gradient(#fefefe, #d1d1d1);`;
+            text.style = `color:#d1d1d1;`;
+          } else if (percent <= 79) {
+            let rotate = (percent - 50) * 3.6 - 180;
+            left.style = `transform: rotate(${rotate}deg);background: linear-gradient(#167c86, #1b7e90);`;
+            right.style = `background: linear-gradient(#308ba3, #1b7e90);`;
+            text.style = `color:#167c86;`;
+          } else {
+            let rotate = (percent - 50) * 3.6 - 180;
+            left.style = `transform: rotate(${rotate}deg); background: linear-gradient(#f36722, #f5821e);`;
+            right.style = `background: linear-gradient(#f3d18f, #f5821e);`;
+            text.style = `color:#f36722;`;
+          }
+          console.log([text]);
+          text.innerText = percent;
+        };
+
+        setPercent(60);
+      };
+    </script>
   </body>
 </html>
