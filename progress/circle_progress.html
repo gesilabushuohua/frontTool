@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>circle process</title>
+    <style>
+      .circle {
+        position: relative;
+        font-size: 200px;
+        width: 1em;
+        height: 1em;
+        background-color: #ebebeb;
+      }
+      .circle .left,
+      .circle .right {
+        width: 1em;
+        height: 1em;
+      }
+
+      .circle .left {
+        clip: rect(0, 0.5em, auto, 0);
+        transform: rotate(0deg);
+        background-image: linear-gradient(to right, red, yellow, red);
+      }
+
+      .circle .right {
+        clip: rect(0, auto, auto, 0.5em);
+        transform: rotate(0deg);
+        background-image: linear-gradient(to right, red, yellow, red);
+      }
+
+      .circle .center {
+        width: 0.7em;
+        height: 0.7em;
+        text-align: center;
+        line-height: 0.7em;
+        background-color: #fff;
+      }
+
+      .circle .center > span {
+        font-size: 20px;
+      }
+
+      .circle * {
+        position: absolute;
+        margin: auto;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+      }
+      .circle,
+      .circle > * {
+        border-radius: 50%;
+      }
+
+      /* 
+      小于50%
+      left 背景色同 父级背景色
+      right -180 deg
+
+      大于50%
+      left -180 deg
+      right 0
+       */
+    </style>
+  </head>
+
+  <body>
+    <div class="circle">
+      <div class="left"></div>
+      <div class="right"></div>
+      <div class="center">
+        <span>80%</span>
+      </div>
+    </div>
+  </body>
+</html>
