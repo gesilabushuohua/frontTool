@@ -3,6 +3,7 @@
   <head>
     <title>switch</title>
     <style>
+
       .switch-contain {
         /* switch 大小控制 */
         font-size: 200px;
@@ -25,7 +26,7 @@
         border-radius: 0.3em;
       }
 
-      .switch-slider .cricle {
+       .switch-slider .cricle {
         position: absolute;
         width: 0.8em;
         height: 0.8em;
@@ -37,22 +38,34 @@
         transition: left 0.2s;
       }
 
-      .actived {
+       .actived {
         background-color: #8db9f4;
       }
-      .actived .cricle {
+     .actived .cricle {
         left: 1.1em;
         background-color: #1a73e8;
         box-shadow: 0 0 0.05em #1a73e8;
       }
     </style>
+   
   </head>
   <body>
-    <div class="switch-contain">
-      <div class="switch-slider actived">
-        <div class="cricle"></div>
-      </div>
+    <div class="dome1">
+        <div class="switch-contain">
+            <div class="switch-slider actived">
+              <div class="cricle"></div>
+            </div>
+          </div>
     </div>
+   
+    <div class="dome1">
+        <div class="switch-contain">
+            <div class="switch-slider actived">
+              <div class="cricle"></div>
+            </div>
+          </div>
+    </div>
+
     <script>
       //点击开关时间
       window.onload = function() {

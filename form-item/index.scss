@@ -1,0 +1,184 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+$default-font-size: 18px;
+
+body {
+  font-size: $default-font-size;
+}
+
+.inline {
+  display: flex;
+}
+
+.form-item {
+  margin: 10px 20px;
+}
+
+/* 标签 */
+.b-label {
+  display: inline-block;
+  width: 80px;
+  padding: 0 5px;
+  color: #707070;
+  line-height: 40px;
+  font-weight: normal;
+  text-align: center;
+}
+
+/* 输入框 */
+.b-input {
+  padding: 0 20px;
+  width: 350px;
+  height: 40px;
+  line-height: 40px;
+  border-radius: 40px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+
+  &::placeholder {
+    color: #ccc;
+    font-size: $default-font-size;
+  }
+
+  &:focus {
+    border-color: #66afe9;
+    outline: 0;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075),
+      0 0 8px rgba(102, 175, 233, 0.6);
+  }
+}
+
+/* 密码输入框 */
+.b-input-hidden-pwd,
+.b-input-visible-pwd {
+  position: relative;
+
+  .input_icon {
+    position: absolute;
+    top: 0;
+    right: 10px;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+  }
+}
+
+.b-input-hidden-pwd {
+  .icon_eye {
+    background: url(./images/icon_eye_close.png) center no-repeat;
+    background-size: 25px;
+  }
+}
+
+.b-input-visible-pwd {
+  .icon_eye {
+    background: url(./images/icon_eye_open.png) center no-repeat;
+    background-size: 25px;
+  }
+}
+
+/* 下拉框 */
+.b-select {
+  position: relative;
+  width: 350px;
+  height: 40px;
+  line-height: 40px;
+
+  > select {
+    appearance: none;
+    padding-right: 12px;
+
+    > option {
+      display: block;
+      border: 1px solid #707070;
+
+      &:hover {
+        background: #666;
+      }
+    }
+  }
+
+  &::after {
+    content: ' ';
+    position: absolute;
+    top: 12px;
+    right: 15px;
+    width: 20px;
+    height: 20px;
+    background: url(./images/icon_more.png) center no-repeat transparent;
+    background-size: 20px;
+  }
+}
+
+/* 选择框 */
+.b-checkbox {
+  input[type='checkbox'].check {
+    margin: 8px;
+    outline: none;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 24px;
+    height: 24px;
+    border: 1px solid #999;
+    border-radius: 4px;
+  }
+
+  input[type='checkbox'].check:checked {
+    background: url(./images/icon_selected.png) center no-repeat;
+    background-size: 18px;
+    border-color: #66afe9;
+    outline: 0;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075),
+      0 0 4px rgba(102, 175, 233, 0.6);
+  }
+}
+
+/* 开关 */
+.b-switch {
+  margin: 8px;
+
+  input[type='checkbox'].switch {
+    outline: none;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    position: relative;
+    width: 60px;
+    height: 30px;
+    background: linear-gradient(to right, #999, #ccc);
+    border-radius: 40px;
+    transition: border-color 0.3s, background-color 0.3s;
+    margin-top: -1px !important;
+  }
+
+  input[type='checkbox'].switch::after {
+    content: '';
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    left: 1px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0, 0, 2px, #999;
+    transition: 0.4s;
+  }
+
+  input[type='checkbox'].switch:checked {
+    background: linear-gradient(to right, #1cd1d3, #07a1f4);
+  }
+
+  /* 当input[type=checkbox]被选中时：伪元素显示下面样式 位置发生变化 */
+  input[type='checkbox'].switch:checked::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 49%;
+  }
+}
