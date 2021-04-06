@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>router</title>
+  <style>
+    #nav {
+      display: flex;
+      list-style: none;
+    }
+
+    #nav li {
+      margin: 1px;
+      padding: 8px 16px;
+      background-color: #ebebeb;
+      color: #000;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .content {
+      width: 200px;
+      height: 200px;
+      font-size: 24px;
+      text-align: center;
+      line-height: 200px;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+   <ul id="nav">
+    <li data-path="a">a</li>
+    <li data-path="b">b</li>
+    <li data-path="c">c</li>
+    <li data-path="d">d</li>
+  </ul>
+  <div id="a" class="content">A</div>
+  <div id="b" class="hidden content">B</div>
+  <div id="c" class="hidden content">C</div>
+  <div id="d" class="hidden content">D</div>
+
+  <script src="./router.js"></script>
+</body>
+
+</html>
